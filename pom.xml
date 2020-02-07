@@ -1,0 +1,87 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.one23lb.apim</groupId>
+  <artifactId>apim-event-consumer</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>apim-event-consumer</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<maven.compiler.source>1.8</maven.compiler.source>
+	<maven.compiler.target>1.8</maven.compiler.target>
+	<java.version>1.8</java.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+    	<groupId>com.microsoft.azure</groupId>
+    	<artifactId>azure-eventhubs-spark_2.11</artifactId>
+    	<version>2.3.14.1</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.microsoft.azure</groupId>
+    	<artifactId>azure-eventhubs-eph</artifactId>
+    	<version>3.0.2</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.slf4j</groupId>
+    	<artifactId>slf4j-jdk14</artifactId>
+    	<version>1.7.30</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.one23lb.apim</groupId>
+    	<artifactId>apim-event-core</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <!-- https://maven.apache.org/shared/maven-archiver/examples/classpath.html -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+			  <classpathPrefix>deps/</classpathPrefix>
+			  <mainClass>org.one23lb.apim.event.consumer.Main</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+	    <!-- https://maven.apache.org/plugins/maven-dependency-plugin/usage.html -->
+		<!-- https://maven.apache.org/plugins/maven-dependency-plugin/examples/copying-project-dependencies.html -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.1.1</version>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <!-- configure the plugin here -->
+			  <outputDirectory>${project.build.directory}/deps</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
