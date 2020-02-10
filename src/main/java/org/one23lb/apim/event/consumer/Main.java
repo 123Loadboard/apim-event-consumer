@@ -56,7 +56,7 @@ public class Main
 
 			if (args.length > 0)
 			{
-				System.out.println("Capturing to " + args[0]);
+				LOG.info("Capturing to " + args[0]);
 
 				try (final FileOutputStream fos = new FileOutputStream(args[0], true);
 						final FileEventWriter writer = new FileEventWriter(fos))
@@ -150,8 +150,12 @@ public class Main
 				itsWriter.write("// " + context.getPartitionId() + "," + data.getSystemProperties().getOffset() + ","
 						+ data.getSystemProperties().getSequenceNumber() + "\r\n");
 
-				itsWriter.write(EventParser.parse(new String(data.getBytes(), StandardCharsets.UTF_8)).toString());
+				final String json = EventParser.parse(new String(data.getBytes(), StandardCharsets.UTF_8)).toString();
+
+				itsWriter.write(json);
 				itsWriter.write("\r\n");
+
+				System.out.println(json);
 			}
 			catch (final Exception e)
 			{
